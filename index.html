@@ -40,7 +40,7 @@ button{
 
 /* Hidden Surprise */
 #surprise{
-    display:none;
+    display:block;
 }
 
 h1{
@@ -62,6 +62,7 @@ canvas{
     top:0;
     left:0;
     pointer-events:none;
+    z-index:-1;
 }
 </style>
 </head>
@@ -75,7 +76,8 @@ canvas{
     <button onclick="checkPass()">Unlock Surprise 🔓</button>
 </div>
 
-<div id="surprise">
+<div id="surprise" 
+style="display:block;">
     <div class="photo">
     <img src="IMG-20260304-WA0010.jpg">
     <img src="IMG-20260304-WA0009.jpg">
@@ -161,6 +163,7 @@ requestAnimationFrame(animate);
 </body>
 
 </html>
+
 
 
 
