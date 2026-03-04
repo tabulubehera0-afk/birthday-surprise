@@ -3,6 +3,7 @@
 <head>
 <title>Birthday Surprise</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
 body {
   margin: 0;
@@ -13,9 +14,9 @@ body {
   overflow: hidden;
 }
 
-/* Surprise Section */
+/* Surprise Section hidden initially */
 #surprise {
-  display: block;
+  display: none;   /* HIDE until password entered */
   position: relative;
   z-index: 2;
   padding-top: 40px;
@@ -27,6 +28,11 @@ h1 {
   font-size: 2em;
 }
 
+p {
+  font-size: 1.2em;
+}
+
+/* Small photos */
 .photo img {
   width: 170px;
   height: 170px;
@@ -36,7 +42,48 @@ h1 {
   margin: 10px;
 }
 
-/* Fireworks canvas goes behind everything */
+/* Main photo bigger */
+.main-photo img {
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  border: 6px solid gold;
+  box-shadow: 0 0 30px gold;
+  margin: 20px;
+}
+
+/* Password popup */
+#login {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  z-index: 5;
+  background: rgba(0,0,0,0.9);
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+}
+
+#login input {
+  padding: 10px;
+  border-radius: 20px;
+  border: none;
+  text-align: center;
+  margin-top: 10px;
+}
+
+#login button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  background: gold;
+  font-weight: bold;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+/* Fireworks canvas */
 canvas {
   position: fixed;
   top: 0;
@@ -51,6 +98,7 @@ canvas {
 
 <body>
 
+<!-- Password Popup -->
 <div id="login">
   <h2>Enter Secret Password 🎁</h2>
   <input type="password" id="pass" placeholder="Enter Password">
@@ -58,8 +106,9 @@ canvas {
   <button onclick="checkPass()">Unlock Surprise 🔓</button>
 </div>
 
+<!-- Surprise Content -->
 <div id="surprise">
-  <!-- Your 4 photos -->
+  <!-- 4 Additional Photos -->
   <div class="photo">
     <img src="IMG-20260304-WA0010.jpg">
     <img src="IMG-20260304-WA0009.jpg">
@@ -67,31 +116,35 @@ canvas {
     <img src="IMG-20260304-WA0007.jpg">
   </div>
 
+  <!-- Birthday Wishes -->
   <h1>🎉 Happy Birthday Gehlima 👑</h1>
   <p>Stay blessed and happy always with your loving people! ✨</p>
 
-  <!-- Main photo -->
-  <div class="photo">
+  <!-- Main Photo -->
+  <div class="main-photo">
     <img src="photo.jpg">
   </div>
 </div>
 
+<!-- Fireworks Canvas -->
 <canvas id="fw"></canvas>
 
 <script>
+// Check Password
 function checkPass(){
   var password="6370";   // Change password here
   var user=document.getElementById("pass").value;
 
   if(user===password){
-    document.getElementById("login").style.display="none";
-    startFireworks();
-  }else{
+    document.getElementById("login").style.display="none";      // Hide popup
+    document.getElementById("surprise").style.display="block";  // Show content
+    startFireworks();                                           // Start fireworks
+  } else {
     alert("Wrong Password ❌");
   }
 }
 
-/* Fireworks */
+/* Fireworks Animation */
 const canvas = document.getElementById("fw");
 const ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
@@ -119,6 +172,7 @@ function startFireworks(){
       });
     }
   }, 1000);
+
   animate();
 }
 
