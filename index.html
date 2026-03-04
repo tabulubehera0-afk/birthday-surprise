@@ -1,72 +1,50 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Birthday Surprise 🔐</title>
+<title>Birthday Surprise</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <style>
-body{
-    margin:0;
-    font-family:Segoe UI;
-    background:black;
-    color:white;
-    text-align:center;
-    overflow:hidden;
+body {
+  margin: 0;
+  font-family: Segoe UI;
+  background: black;
+  color: white;
+  text-align: center;
+  overflow: hidden;
 }
 
-/* Login Screen */
-#login{
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
+/* Surprise Section */
+#surprise {
+  display: block;
+  position: relative;
+  z-index: 2;
+  padding-top: 40px;
 }
 
-input{
-    padding:10px;
-    border-radius:20px;
-    border:none;
-    text-align:center;
+h1 {
+  color: gold;
+  text-shadow: 0 0 20px gold;
+  font-size: 2em;
 }
 
-button{
-    padding:10px 20px;
-    border:none;
-    border-radius:20px;
-    background:gold;
-    font-weight:bold;
-    margin-top:10px;
+.photo img {
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  border: 4px solid gold;
+  box-shadow: 0 0 25px gold;
+  margin: 10px;
 }
 
-/* Hidden Surprise */
-#surprise{
-    display:block;
-    position:relative;
-    z-index:2;
-}
-
-h1{
-    color:gold;
-    margin-top:60px;
-    text-shadow:0 0 20px gold;
-}
-
-.photo img{
-    width:170px;
-    height:170px;
-    border-radius:50%;
-    border:4px solid gold;
-    box-shadow:0 0 25px gold;
-}
-
-canvas{
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    pointer-events:none;
-    z-index:-1;
+/* Fireworks canvas goes behind everything */
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
 }
 </style>
 </head>
@@ -74,102 +52,93 @@ canvas{
 <body>
 
 <div id="login">
-    <h2>Enter Secret Password 🎁</h2>
-    <input type="password" id="pass" placeholder="Enter Password">
-    <br>
-    <button onclick="checkPass()">Unlock Surprise 🔓</button>
+  <h2>Enter Secret Password 🎁</h2>
+  <input type="password" id="pass" placeholder="Enter Password">
+  <br>
+  <button onclick="checkPass()">Unlock Surprise 🔓</button>
 </div>
 
-<div id="surprise" 
-style="display:block;">
-    <div class="photo">
+<div id="surprise">
+  <!-- Your 4 photos -->
+  <div class="photo">
     <img src="IMG-20260304-WA0010.jpg">
     <img src="IMG-20260304-WA0009.jpg">
     <img src="IMG-20260304-WA0008.jpg">
     <img src="IMG-20260304-WA0007.jpg">
-</div>
-    
-    <h1>🎉 Happy Birthday Gehlima 👑</h1>
-    <p>Stay blessed and happy always with your loving people! 🎂✨</p>
+  </div>
 
-    <div class="photo">
-        <img src="photo.jpg">
-    </div>
+  <h1>🎉 Happy Birthday Gehlima 👑</h1>
+  <p>Stay blessed and happy always with your loving people! ✨</p>
+
+  <!-- Main photo -->
+  <div class="photo">
+    <img src="photo.jpg">
+  </div>
 </div>
 
 <canvas id="fw"></canvas>
 
 <script>
 function checkPass(){
-    var password="6370";   // 🔐 CHANGE PASSWORD HERE
-    var user=document.getElementById("pass").value;
-    
-    if(user===password){
-        document.getElementById("login").style.display="none";
-        document.getElementById("surprise").style.display="block";
-        startFireworks();
-    }else{
-        alert("Wrong Password ❌");
-    }
+  var password="6370";   // Change password here
+  var user=document.getElementById("pass").value;
+
+  if(user===password){
+    document.getElementById("login").style.display="none";
+    startFireworks();
+  }else{
+    alert("Wrong Password ❌");
+  }
 }
 
 /* Fireworks */
-const canvas=document.getElementById("fw");
-const ctx=canvas.getContext("2d");
-canvas.width=window.innerWidth;
-canvas.height=window.innerHeight;
+const canvas = document.getElementById("fw");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
-let particles=[];
+let particles = [];
 
 function random(min,max){
-return Math.random()*(max-min)+min;
+  return Math.random()*(max-min)+min;
 }
 
 function startFireworks(){
-setInterval(()=>{
-let x=random(0,canvas.width);
-let y=random(0,canvas.height/2);
-for(let i=0;i<50;i++){
-particles.push({
-x:x,
-y:y,
-radius:2,
-color:"hsl("+random(0,360)+",100%,50%)",
-speedX:random(-3,3),
-speedY:random(-3,3),
-life:100
-});
-}
-},1000);
-
-animate();
+  setInterval(() => {
+    let x = random(0,canvas.width);
+    let y = random(0,canvas.height/2);
+    for(let i=0;i<50;i++){
+      particles.push({
+        x: x,
+        y: y,
+        radius: 2,
+        color: "hsl("+random(0,360)+",100%,50%)",
+        speedX: random(-3,3),
+        speedY: random(-3,3),
+        life: 100
+      });
+    }
+  }, 1000);
+  animate();
 }
 
 function animate(){
-ctx.fillStyle="rgba(0,0,0,0.2)";
-ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.clearRect(0,0,canvas.width,canvas.height);
 
-for(let i=0;i<particles.length;i++){
-let p=particles[i];
-ctx.beginPath();
-ctx.arc(p.x,p.y,p.radius,0,Math.PI*2);
-ctx.fillStyle=p.color;
-ctx.fill();
-p.x+=p.speedX;
-p.y+=p.speedY;
-p.life--;
-if(p.life<=0){ particles.splice(i,1); i--; }
-}
-requestAnimationFrame(animate);
+  for(let i=0;i<particles.length;i++){
+    let p = particles[i];
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.radius,0,Math.PI*2);
+    ctx.fillStyle = p.color;
+    ctx.fill();
+    p.x += p.speedX;
+    p.y += p.speedY;
+    p.life--;
+    if(p.life <= 0){ particles.splice(i,1); i--; }
+  }
+  requestAnimationFrame(animate);
 }
 </script>
 
 </body>
-
 </html>
-
-
-
-
-
-
