@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Birthday Surprise 🔐</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+    margin:0;
+    font-family:Segoe UI;
+    background:black;
+    color:white;
+    text-align:center;
+    overflow:hidden;
+}
+
+/* Login Screen */
+#login{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+}
+
+input{
+    padding:10px;
+    border-radius:20px;
+    border:none;
+    text-align:center;
+}
+
+button{
+    padding:10px 20px;
+    border:none;
+    border-radius:20px;
+    background:gold;
+    font-weight:bold;
+    margin-top:10px;
+}
+
+/* Hidden Surprise */
+#surprise{
+    display:none;
+}
+
+h1{
+    color:gold;
+    margin-top:60px;
+    text-shadow:0 0 20px gold;
+}
+
+.photo img{
+    width:170px;
+    height:170px;
+    border-radius:50%;
+    border:4px solid gold;
+    box-shadow:0 0 25px gold;
+}
+
+canvas{
+    position:absolute;
+    top:0;
+    left:0;
+}
+</style>
+</head>
+
+<body>
+
+<div id="login">
+    <h2>Enter Secret Password 🎁</h2>
+    <input type="password" id="pass" placeholder="Enter Password">
+    <br>
+    <button onclick="checkPass()">Unlock Surprise 🔓</button>
+</div>
+
+<div id="surprise">
+    <h1>🎉 Happy Birthday Gehlima 👑</h1>
+    <p>Stay blessed and happy always! 🎂✨</p>
+
+    <div class="photo">
+        <img src="photo.jpg">
+    </div>
+</div>
+
+<canvas id="fw"></canvas>
+
+<script>
+function checkPass(){
+    var password="6370";   // 🔐 CHANGE PASSWORD HERE
+    var user=document.getElementById("pass").value;
+    
+    if(user===password){
+        document.getElementById("login").style.display="none";
+        document.getElementById("surprise").style.display="block";
+        startFireworks();
+    }else{
+        alert("Wrong Password ❌");
+    }
+}
+
+/* Fireworks */
+const canvas=document.getElementById("fw");
+const ctx=canvas.getContext("2d");
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+let particles=[];
+
+function random(min,max){
+return Math.random()*(max-min)+min;
+}
+
+function startFireworks(){
+setInterval(()=>{
+let x=random(0,canvas.width);
+let y=random(0,canvas.height/2);
+for(let i=0;i<50;i++){
+particles.push({
+x:x,
+y:y,
+radius:2,
+color:"hsl("+random(0,360)+",100%,50%)",
+speedX:random(-3,3),
+speedY:random(-3,3),
+life:100
+});
+}
+},1000);
+
+animate();
+}
+
+function animate(){
+ctx.fillStyle="rgba(0,0,0,0.2)";
+ctx.fillRect(0,0,canvas.width,canvas.height);
+
+for(let i=0;i<particles.length;i++){
+let p=particles[i];
+ctx.beginPath();
+ctx.arc(p.x,p.y,p.radius,0,Math.PI*2);
+ctx.fillStyle=p.color;
+ctx.fill();
+p.x+=p.speedX;
+p.y+=p.speedY;
+p.life--;
+if(p.life<=0){ particles.splice(i,1); i--; }
+}
+requestAnimationFrame(animate);
+}
+</script>
+
+</body>
+</html>
