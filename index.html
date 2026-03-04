@@ -41,6 +41,8 @@ button{
 /* Hidden Surprise */
 #surprise{
     display:block;
+    position:relative;
+    z-index:2;
 }
 
 h1{
@@ -58,9 +60,11 @@ h1{
 }
 
 canvas{
-    position:absolute;
+    position:fixed;
     top:0;
     left:0;
+    width:100%;
+    height:100%;
     pointer-events:none;
     z-index:-1;
 }
@@ -163,6 +167,7 @@ requestAnimationFrame(animate);
 </body>
 
 </html>
+
 
 
 
